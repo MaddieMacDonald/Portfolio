@@ -1,0 +1,38 @@
+[
+  {
+    "title": "Supply Chain Network Optimization",
+    "category": "Supply Chain",
+    "description": "Model used to evaluate warehouse locations and minimize transportation overhead across distribution nodes.",
+    "technologies": ["Python", "Excel", "Operations Research"]
+  },
+  {
+    "title": "Sales & Inventory Analytics Dashboard",
+    "category": "Data",
+    "description": "Interactive Tableau and SQL-backed dashboard designed to monitor stock turnover rates and sales trends.",
+    "technologies": ["SQL", "Tableau", "Data Analysis"]
+  },
+  {
+    "title": "ERP Workflow Analysis Tool",
+    "category": "Supply Chain",
+    "description": "Enterprise system evaluation to streamline procurement cycles and vendor management workflows.",
+    "technologies": ["MIS", "Process Modeling", "ERP Systems"]
+  },
+  {
+    "title": "Portfolio Website",
+    "category": "Web",
+    "description": "Responsive multi-page professional portfolio built with HTML, CSS, JavaScript, and Bootstrap.",
+    "technologies": ["JavaScript", "Bootstrap", "HTML", "CSS"]
+  },
+  {
+    "title": "Customer Segmentation Model",
+    "category": "Data",
+    "description": "Clustering script utilizing purchase history data to target high-value retail customer segments.",
+    "technologies": ["Python", "Pandas", "Scikit-Learn"]
+  },
+  {
+    "title": "Operations Scheduling Simulator",
+    "category": "Supply Chain",
+    "description": "Simulation tool for optimizing manufacturing production lines and reducing scheduling bottlenecks.",
+    "technologies": ["Python", "Simulation", "Process Improvement"]
+  }
+]

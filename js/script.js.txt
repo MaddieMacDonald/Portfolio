@@ -1,0 +1,97 @@
+document.addEventListener('DOMContentLoaded', () => {
+    // --- 1. Dark / Light Mode Toggle Feature ---
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    if (darkModeToggle) {
+        if (localStorage.getItem('darkMode') === 'enabled') {
+            document.body.classList.add('dark-mode');
+            darkModeToggle.textContent = '☀️ Mode';
+        }
+
+        darkModeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            if (document.body.classList.contains('dark-mode')) {
+                localStorage.setItem('darkMode', 'enabled');
+                darkModeToggle.textContent = '☀️ Mode';
+            } else {
+                localStorage.setItem('darkMode', 'disabled');
+                darkModeToggle.textContent = '🌙 Mode';
+            }
+        });
+    }
+
+    // --- 2. Dynamic Project Loading via fetch() & Filtering ---
+    const projectsGrid = document.getElementById('projectsGrid');
+    if (projectsGrid) {
+        let allProjects = [];
+
+        fetch('data/projects.json')
+            .then(response => {
+                if (!response.ok) throw new Error('Failed to load projects.json');
+                return response.json();
+            })
+            .then(data => {
+                allProjects = data;
+                displayProjects(allProjects);
+            })
+            .catch(error => {
+                console.error('Error fetching projects:', error);
+                projectsGrid.innerHTML = `<div class="col-12 text-center text-danger"><p>Unable to load projects. Make sure you are running via a local web server (Live Server)!</p></div>`;
+            });
+
+        function displayProjects(projectsToDisplay) {
+            projectsGrid.innerHTML = '';
+            if (projectsToDisplay.length === 0) {
+                projectsGrid.innerHTML = `<div class="col-12 text-center"><p class="text-muted">No projects found matching your criteria.</p></div>`;
+                return;
+            }
+
+            projectsToDisplay.forEach(project => {
+                const techBadges = project.technologies.map(tech => `<span class="badge bg-secondary me-1">${tech}</span>`).join('');
+                const cardHTML = `
+                    <div class="col-md-4">
+                        <div class="card h-100 shadow-sm border-0 p-3">
+                            <div class="card-body d-flex flex-column">
+                                <span class="badge bg-primary align-self-start mb-2">${project.category}</span>
+                                <h3 class="h5 card-title fw-bold">${project.title}</h3>
+                                <p class="card-text text-muted flex-grow-1">${project.description}</p>
+                                <div class="mt-3 pt-2 border-top">
+                                    <div class="mb-2">${techBadges}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                projectsGrid.innerHTML += cardHTML;
+            });
+        }
+
+        const filterButtons = document.querySelectorAll('#filterButtons button');
+        filterButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                e.target.classList.add('active');
+
+                const filterCategory = e.target.getAttribute('data-filter');
+                if (filterCategory === 'All') {
+                    displayProjects(allProjects);
+                } else {
+                    const filtered = allProjects.filter(p => p.category === filterCategory);
+                    displayProjects(filtered);
+                }
+            });
+        });
+
+        const searchInput = document.getElementById('searchInput');
+        if (searchInput) {
+            searchInput.addEventListener('input', (e) => {
+                const query = e.target.value.toLowerCase();
+                const filtered = allProjects.filter(p => 
+                    p.title.toLowerCase().includes(query) || 
+                    p.description.toLowerCase().includes(query) ||
+                    p.technologies.some(t => t.toLowerCase().includes(query))
+                );
+                displayProjects(filtered);
+            });
+        }
+    }
+});
